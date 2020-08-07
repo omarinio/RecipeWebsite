@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.core.paginator import Paginator
 
-from .models import User
+from .models import User, Recipe
 
 # Create your views here.
 
@@ -68,3 +68,8 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "main/register.html")
+
+def recipes(request):
+    return render(request, "main/recipes.html", {
+        'recipes': Recipe.objects.all()
+    })
