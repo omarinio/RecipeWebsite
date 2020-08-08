@@ -10,9 +10,12 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.core.paginator import Paginator
 
-from .models import User, Recipe
+from .models import User, Recipe, Comment
 
-# Create your views here.
+
+class CommentForm(forms.Form):
+    comment_content = forms.CharField(label = "", widget=forms.Textarea(attrs={'placeholder': 'Post a comment (256 chars max)', 'style': 'width: 600px; height: 180px'}))
+
 
 def index(request):
     return render(request, "main/index.html") 
@@ -82,5 +85,28 @@ def recipes(request):
 
 def recipe_view(request, id):
     return render(request, "main/recipe.html", {
-        'recipe': Recipe.objects.get(id=id)
+        'recipe': Recipe.objects.get(id=id),
+        'comment_form': CommentForm(),
+        'comments': Comment.objects.filter(recipe=id)
     })
+
+
+@login_required
+def comment(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+    data = json.loads(request.body)   
+
+    comment_body = data.get("comment", "")
+    recipe_id = data.get("recipe", "")
+
+    try:
+        new_comment = Comment(user=request.user, comment = comment_body, recipe = Recipe.objects.get(id=recipe_id))
+        new_comment.save()
+        return JsonResponse({"message": "Comment successfully added!", "status": 201, "created_at": f"{new_comment.created_at}", "user": f"{request.user}"}, status=201)
+    except:
+        return JsonResponse({"message": f"{recipe_id}"}, status=403)
+
+
+    

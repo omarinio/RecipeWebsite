@@ -8,9 +8,38 @@
             <h5 class="card-title" id="recipe-title">{{ recipe.title|title }}</h5>
             <p class="card-text">{{ recipe.body }}</p>
         </div>
-  </div>
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+            <h4 class="card-title">Submit a comment:</h4>
+            <form id="comment-form" data-recipe="{{ recipe.id }}">
+                {% csrf_token %}
+                <p style="padding-top: 5px">{{ comment_form }}</p>
+                <p><button type="submit" class="btn btn-primary btn-sm">Post Comment</button></p>
+            </form>
+    
+            <h5>Comments</h5>
+            <hr>
+            <div id="comments-div">
+                {% for comment in comments %}
+                    <p>{{ comment.comment }}</p>
+                    <p><b>User:</b> {{ comment.user }}</p>
+                    <p>{{ comment.created_at }}</p>
+                    <hr>
+                {% endfor %}
+            </div>
+            
+        </div>
+
+        
+    </div>
+    
+
 {% endblock %}
 
 {% block script %}
   <script src="{% static 'main/image-popup.js' %}"></script>
+  <script src="{% static 'main/comments.js' %}"></script>
 {% endblock %}
