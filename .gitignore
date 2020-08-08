@@ -17,5 +17,5 @@ tests/.coverage
 build/
 tests/report/
 recipe/recipe/secrets.py
-recipe/recipe/asgi.py
 recipe/main/static/main/w2ui-1.5.rc1.css
+recipe/main/static/main/w2ui-1.5.rc1.js
