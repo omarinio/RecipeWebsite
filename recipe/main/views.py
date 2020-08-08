@@ -73,7 +73,14 @@ def register(request):
     else:
         return render(request, "main/register.html")
 
+
 def recipes(request):
     return render(request, "main/recipes.html", {
         'recipes': Recipe.objects.all()
+    })
+
+
+def recipe_view(request, id):
+    return render(request, "main/recipe.html", {
+        'recipe': Recipe.objects.get(id=id)
     })
