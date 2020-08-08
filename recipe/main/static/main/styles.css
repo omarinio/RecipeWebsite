@@ -5,3 +5,18 @@
 .card {
     margin: 50px;
 }
+
+h1 {
+    margin: 50px;
+}
+
+.about {
+    margin: 50px;
+    text-align-last: initial;
+}
+
+.logos {
+    margin: 50px;
+    max-width: 75px;
+    max-height: 75px;
+}
