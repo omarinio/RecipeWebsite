@@ -2,6 +2,10 @@
     max-height: 400px;
 }
 
+.card-img-top {
+    max-height: 400px;
+}
+
 .card {
     margin: 50px;
 }

@@ -1,10 +1,16 @@
 {% extends "main/layout.html" %}
+{% load static %}
 
 {% block body %}
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ recipe.picture.url }}" alt="Card image cap">
+    <div class="card">
+        <img id="recipe-img" class="card-img-top" src="{{ recipe.picture.url }}" alt="Card image cap">
         <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h5 class="card-title" id="recipe-title">{{ recipe.title|title }}</h5>
+            <p class="card-text">{{ recipe.body }}</p>
         </div>
   </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'main/image-popup.js' %}"></script>
 {% endblock %}
