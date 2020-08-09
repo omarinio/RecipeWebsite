@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(result => {
               console.log(result);
               if (result.status == 201) {
-                document.getElementById("comments-div").innerHTML += `<p>${comment}</p>
-                <p><b>User:</b> ${ result.user }</p>
-                <p>${ result.created_at }</p>
+                document.getElementById("comments-div").innerHTML += `<p><b>User:</b><a href="#"> ${ result.user }</a> <small class="text-muted">- ${ result.created_at }</small></p>
+                <p>${ comment }</p>
+            
                 <hr>`
                 document.getElementById("id_comment_content").value = '';
               } else {
