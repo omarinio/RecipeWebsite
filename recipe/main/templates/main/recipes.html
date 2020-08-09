@@ -4,7 +4,7 @@
     {% for recipe in recipes%}
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ recipe.title|title }}</h5>
+                <h5 class="card-title"><a href="{% url 'recipe' recipe.id %}">{{ recipe.title|title }}</a></h5>
                 <p class="card-text">{{ recipe.body|truncatewords:30 }}</p>
                 <p class="card-text"><a href="#">{{ recipe.user }}</a></p>
                 <p class="card-text"><small class="text-muted">Uploaded: {{ recipe.timestamp }}</small></p>
