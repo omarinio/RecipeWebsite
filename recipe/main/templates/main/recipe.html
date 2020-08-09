@@ -3,11 +3,11 @@
 
 {% block body %}
     <div class="card">
-        <img id="recipe-img" class="card-img-top" src="{{ recipe.picture.url }}" alt="Card image cap">
         <div class="card-body">
-            <h5 class="card-title" id="recipe-title">{{ recipe.title|title }}</h5>
+            <h2 class="card-title" id="recipe-title">{{ recipe.title|title }}</h2>
             <p class="card-text">{{ recipe.body }}</p>
         </div>
+        <img id="recipe-img" class="recipe-img" src="{{ recipe.picture.url }}" alt="Card image cap">
     </div>
 
     <div class="card">

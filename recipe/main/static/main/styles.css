@@ -2,8 +2,8 @@
     max-height: 400px;
 }
 
-.card-img-top {
-    max-height: 400px;
+.recipes-images {
+    height: 300px;
 }
 
 .card {
@@ -23,4 +23,17 @@ h1 {
     margin-left: 50px;
     max-width: 64px;
     max-height: 64px;
+}
+
+.recipe-body {
+    width: 300px;
+}
+
+.recipe-img {
+    max-width: 582px;
+    max-height: 582px;
+}
+
+#all-recipes {
+    text-align: center;
 }
