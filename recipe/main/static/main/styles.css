@@ -42,6 +42,6 @@ input, label {
     display: block;
 }
 
-.create-form {
+#create-form {
     margin: 50px;
 }
