@@ -17,10 +17,10 @@ class CommentForm(forms.Form):
     comment_content = forms.CharField(label = "", widget=forms.Textarea(attrs={'placeholder': 'Post a comment (256 chars max)', 'style': 'width: 600px; height: 180px'}))
 
 class RecipeForm(forms.Form):
-    recipe_title = forms.CharField(widget=forms.TextInput(attrs={'help_text': 'Listing name'}))
+    recipe_title = forms.CharField(widget=forms.TextInput(attrs={'style': 'width: 500px'}))
     recipe_description = forms.CharField(widget=forms.Textarea(attrs={'style': 'width: 500px'}))
-    recipe_ingredients = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please seperate ingredients with commas', 'style': 'width: 500px'}))
-    recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please number directions like this: 1.', 'style': 'width: 500px'}))
+    recipe_ingredients = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Seperate ingredients with commas', 'style': 'width: 500px'}))
+    recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Number each step and put it on its own line', 'style': 'width: 500px'}))
     recipe_img = forms.ImageField()
 
 
@@ -118,6 +118,25 @@ def comment(request):
 
 @login_required
 def create(request):
+    if request.method == "POST":
+        new_recipe = RecipeForm(request.POST, request.FILES)
+
+        if new_recipe.is_valid():
+            new_recipe_title = new_recipe.cleaned_data["recipe_title"]
+            new_recipe_description = new_recipe.cleaned_data["recipe_description"]
+            new_recipe_ingredients = new_recipe.cleaned_data["recipe_ingredients"]
+            new_recipe_directions = new_recipe.cleaned_data["recipe_directions"]
+            new_recipe_img = new_recipe.cleaned_data["recipe_img"]
+
+            new_recipe_object = Recipe.objects.create(user = request.user, title = new_recipe_title, description = new_recipe_description, ingredients = new_recipe_ingredients,
+                                        body = new_recipe_directions, picture = new_recipe_img)
+
+            new_recipe_object.save()
+
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            print(new_recipe.errors)
+
     return render(request, "main/create.html", {
         'form': RecipeForm()
     })
