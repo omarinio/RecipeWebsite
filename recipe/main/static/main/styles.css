@@ -37,3 +37,7 @@ h1 {
 #all-recipes {
     text-align: center;
 }
+
+input, label {
+    display: block;
+}

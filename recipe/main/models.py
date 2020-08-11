@@ -7,7 +7,9 @@ class User(AbstractUser):
 
 class Recipe(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="poster")
-    title = models.TextField(blank=False, default="falo")
+    title = models.TextField(blank=False)
+    description = models.TextField(blank=False)
+    ingredients = models.TextField(blank=False)
     body = models.TextField(blank=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField("User", blank=True)

@@ -11,5 +11,6 @@ urlpatterns = [
     path("recipes", views.recipes, name="recipes"),
     path("about", views.about, name="about"),
     path("recipes/<int:id>", views.recipe_view, name="recipe"),
-    path("comment", views.comment, name="comment")
+    path("comment", views.comment, name="comment"),
+    path("create", views.create, name="create")
 ]

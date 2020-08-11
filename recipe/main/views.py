@@ -16,6 +16,13 @@ from .models import User, Recipe, Comment
 class CommentForm(forms.Form):
     comment_content = forms.CharField(label = "", widget=forms.Textarea(attrs={'placeholder': 'Post a comment (256 chars max)', 'style': 'width: 600px; height: 180px'}))
 
+class RecipeForm(forms.Form):
+    recipe_title = forms.CharField(widget=forms.TextInput(attrs={'help_text': 'Listing name'}))
+    recipe_description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Short recipe description', 'style': 'width: 500px'}))
+    recipe_ingredients = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Recipe Ingredients', 'style': 'width: 500px'}))
+    recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Recipe Directions', 'style': 'width: 500px'}))
+    recipe_img = forms.ImageField()
+
 
 def index(request):
     return render(request, "main/index.html") 
@@ -109,4 +116,9 @@ def comment(request):
         return JsonResponse({"message": f"{recipe_id}"}, status=403)
 
 
+@login_required
+def create(request):
+    return render(request, "main/create.html", {
+        'form': RecipeForm()
+    })
     
