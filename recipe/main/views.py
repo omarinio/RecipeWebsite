@@ -18,9 +18,9 @@ class CommentForm(forms.Form):
 
 class RecipeForm(forms.Form):
     recipe_title = forms.CharField(widget=forms.TextInput(attrs={'help_text': 'Listing name'}))
-    recipe_description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Short recipe description', 'style': 'width: 500px'}))
-    recipe_ingredients = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Recipe Ingredients', 'style': 'width: 500px'}))
-    recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Recipe Directions', 'style': 'width: 500px'}))
+    recipe_description = forms.CharField(widget=forms.Textarea(attrs={'style': 'width: 500px'}))
+    recipe_ingredients = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please seperate ingredients with commas', 'style': 'width: 500px'}))
+    recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please number directions like this: 1.', 'style': 'width: 500px'}))
     recipe_img = forms.ImageField()
 
 

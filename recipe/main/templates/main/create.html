@@ -5,17 +5,36 @@
     
     <h1>Post new recipe</h1>
 
-    <form action="{% url 'create' %}" method="post">
-        {% csrf_token %}
-        
-        <div>
-            <label id="title-tag">Recipe title</label>
+    <div id="create-form">
+        <form action="{% url 'create' %}" method="post">
+            {% csrf_token %}
+            
+            <div>
+                <label id="title-tag">Title</label>
+                {{ form.recipe_title }}
+            </div>
             <br>
-            {{ form.recipe_title }}
-        </div>
+            <div>
+                <label id="title-tag">Description</label>
+                {{ form.recipe_description }}
+            </div>
+            <div>
+                <label id="title-tag">Ingredients</label>
+                {{ form.recipe_ingredients }}
+            </div>
+            <div>
+                <label id="title-tag">Directions</label>
+                {{ form.recipe_directions }}
+            </div>
+            <div>
+                <label id="title-tag">Upload image</label>
+                {{ form.recipe_img }}
+            </div>
+            <br>
 
-        <p><button type="submit" class="btn btn-primary">Create Listing</button></p>
-    </form>
+            <p><button type="submit" class="btn btn-primary">Create Listing</button></p>
+        </form>
+    </div>
     
 
 {% endblock %}

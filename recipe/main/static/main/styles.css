@@ -41,3 +41,7 @@ h1 {
 input, label {
     display: block;
 }
+
+.create-form {
+    margin: 50px;
+}
