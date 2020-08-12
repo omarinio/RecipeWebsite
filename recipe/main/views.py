@@ -91,10 +91,14 @@ def recipes(request):
 
 
 def recipe_view(request, id):
+    recipe = Recipe.objects.get(id=id)
+    ingredients = recipe.ingredients.split(",")
+
     return render(request, "main/recipe.html", {
-        'recipe': Recipe.objects.get(id=id),
+        'recipe': recipe,
         'comment_form': CommentForm(),
-        'comments': Comment.objects.filter(recipe=id)
+        'comments': Comment.objects.filter(recipe=id),
+        'ingredients': ingredients
     })
 
 

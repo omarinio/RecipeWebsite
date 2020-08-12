@@ -8,6 +8,15 @@
             <p class="card-text">{{ recipe.body }}</p>
         </div>
         <img id="recipe-img" class="recipe-img" src="{{ recipe.picture.url }}" alt="Card image cap">
+
+        <div class="card-body">
+            <h4 class="card-title">Ingredients</h4>
+            <ul>
+                {% for ingredient in ingredients %}
+                    <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     <div class="card">
