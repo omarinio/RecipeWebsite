@@ -21,31 +21,24 @@
     </div>
     <hr>
     <div class="posts-view">
-        {% for post in posts %}
-            <div class="post card" id="post-{{ post.id }}">
-                <div class="card-body my-card">
-                    {% if post.user == request.user %}
-                        <a href="" id="edit-{{ post.id }}" class="edit-link" data-post_id="{{ post.id }}">Edit</a>
-                    {% endif %}
-                    <a href="{% url 'user' post.user.id %}"><p>{{ post.user }}</p></a>
-                    <p id="content-{{ post.id }}">{{ post.body }}</p>
-                    <form id="edit-div-{{ post.id }}" style="display: none">
-                        {% csrf_token %}
-                        <textarea class="form-control" id="text-{{ post.id }}">{{ post.body }}</textarea>
-                    </form>
-                    <p>{{ post.timestamp }}</p>
-                    {% if request.user in post.likes.all %}
-                        <img src="{% static 'network/filled.png' %}" alt="Like button" class="like-button" data-post_id="{{ post.id }}" data-action="unlike" id="liked-{{ post.id }}" style="display: block">
-                        <img src="{% static 'network/empty.png' %}" alt="Like button" class="like-button" data-post_id="{{ post.id }}" data-action="like" id="unliked-{{ post.id }}" style="display: none">
-                    {% else %}
-                        <img src="{% static 'network/filled.png' %}" alt="Like button" class="like-button" data-post_id="{{ post.id }}" data-action="unlike" id="liked-{{ post.id }}" style="display: none">
-                        <img src="{% static 'network/empty.png' %}" alt="Like button" class="like-button" data-post_id="{{ post.id }}" data-action="like" id="unliked-{{ post.id }}" style="display: block"> 
-                    {% endif %}
-                    <p style="display: inline-block" id="like-count-{{ post.id }}">{{ post.likes.count }}</p>
-                </div>
+        <div class="container">
+            <div class="row">
+                {% for recipe in recipes%}
+                    <div class="col-sm-6 col-lg-4 py-2">
+                        <div class="card h-100 recipe-body">
+                            <img class="card-img-top recipes-images" src="{{ recipe.picture.url }}" alt="Card image cap">
+                            <div class="card-body recipe-body">
+                                <h5 class="card-title"><a href="{% url 'recipe' recipe.id %}">{{ recipe.title|title }}</a></h5>
+                                <p class="card-text">{{ recipe.description|truncatewords:16 }}</p>
+                                <p class="card-text"><a href="{% url 'user' recipe.user %}">{{ recipe.user }}</a></p>
+                                <p class="card-text"><small class="text-muted">Uploaded: {{ recipe.timestamp }}</small></p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-                
-        {% endfor %}
+        </div>
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">

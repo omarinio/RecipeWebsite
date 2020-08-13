@@ -25,7 +25,13 @@ class RecipeForm(forms.Form):
 
 
 def index(request):
-    return render(request, "main/index.html") 
+    random_recipe = Recipe.objects.order_by('?').first()
+
+    print(random_recipe)
+
+    return render(request, "main/index.html", {
+        "recipe": random_recipe
+    }) 
 
 
 def about(request):
@@ -153,6 +159,8 @@ def user(request, username):
     followers = Follow.objects.filter(user = user_profile).count
     following = Follow.objects.filter(follower = user_profile).count
 
+    user_recipes = Recipe.objects.filter(user = user_profile)
+
     # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
 
     # paginated_posts = Paginator(user_posts, 10)
@@ -171,14 +179,16 @@ def user(request, username):
             "followers": followers,
             "following": following,
             "can_follow": True,
-            "is_following": is_following
+            "is_following": is_following,
+            "recipes": user_recipes
         })
     else:
         return render(request, "main/profile.html", {
             "user_profile": user_profile,
             "followers": followers,
             "following": following,
-            "can_follow": False
+            "can_follow": False,
+            "recipes": user_recipes
         })
 
 
