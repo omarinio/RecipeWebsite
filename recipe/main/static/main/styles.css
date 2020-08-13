@@ -47,3 +47,11 @@ input, label {
 #create-form {
     margin: 50px;
 }
+
+#follow-button-div {
+    margin-left: 50px;
+}
+
+#follower-view {
+    margin-left: 50px;
+}

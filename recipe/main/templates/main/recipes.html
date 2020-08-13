@@ -11,7 +11,7 @@
                         <div class="card-body recipe-body">
                             <h5 class="card-title"><a href="{% url 'recipe' recipe.id %}">{{ recipe.title|title }}</a></h5>
                             <p class="card-text">{{ recipe.description|truncatewords:16 }}</p>
-                            <p class="card-text"><a href="#">{{ recipe.user }}</a></p>
+                            <p class="card-text"><a href="{% url 'user' recipe.user %}">{{ recipe.user }}</a></p>
                             <p class="card-text"><small class="text-muted">Uploaded: {{ recipe.timestamp }}</small></p>
                         </div>
                         

@@ -12,5 +12,7 @@ urlpatterns = [
     path("about", views.about, name="about"),
     path("recipes/<int:id>", views.recipe_view, name="recipe"),
     path("comment", views.comment, name="comment"),
-    path("create", views.create, name="create")
+    path("create", views.create, name="create"),
+    path("user/<username>", views.user, name="user"),
+    path("follow", views.follow)
 ]

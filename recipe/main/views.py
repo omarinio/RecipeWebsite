@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.core.paginator import Paginator
 
-from .models import User, Recipe, Comment
+from .models import User, Recipe, Comment, Follow
 
 
 class CommentForm(forms.Form):
@@ -144,4 +144,72 @@ def create(request):
     return render(request, "main/create.html", {
         'form': RecipeForm()
     })
-    
+
+
+def user(request, username):
+
+    user_profile = User.objects.get(username=username)
+
+    followers = Follow.objects.filter(user = user_profile).count
+    following = Follow.objects.filter(follower = user_profile).count
+
+    # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
+
+    # paginated_posts = Paginator(user_posts, 10)
+
+    # page_number = request.GET.get('page')
+    # page_posts = paginated_posts.get_page(page_number)
+
+    if request.user.is_authenticated and request.user != user_profile:
+        is_following = False
+
+        if Follow.objects.filter(user = user_profile, follower = request.user).count() > 0:
+            is_following = True
+
+        return render(request, "main/profile.html", {
+            "user_profile": user_profile,
+            "followers": followers,
+            "following": following,
+            "can_follow": True,
+            "is_following": is_following
+        })
+    else:
+        return render(request, "main/profile.html", {
+            "user_profile": user_profile,
+            "followers": followers,
+            "following": following,
+            "can_follow": False
+        })
+
+
+@login_required(login_url='login')
+def follow(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        user = data.get("user", "")
+        action = data.get("action", "")
+
+        if action == "Follow":
+            try:
+                if Follow.objects.filter(user = User.objects.get(username = user), follower = request.user).count() == 0:
+                    Follow.objects.create(user = User.objects.get(username = user), follower = request.user)
+                    
+                    return JsonResponse({'status': 201, 'action': "Unfollow", 'followers': Follow.objects.filter(user = User.objects.get(username = user)).count()}, status=201)
+                else:
+                    return JsonResponse({'message': "You are already following this user!"}, status=400)
+            except:
+                return JsonResponse({}, status=404)
+        else:
+            try:
+                if Follow.objects.filter(user = User.objects.get(username = user), follower = request.user).count() > 0:
+                    follow_to_delete = Follow.objects.get(user = User.objects.get(username = user), follower = request.user)
+                    follow_to_delete.delete()
+
+                    return JsonResponse({'status': 201, 'action': "Follow", 'followers': Follow.objects.filter(user = User.objects.get(username = user)).count()}, status=201)
+                else: 
+                    return JsonResponse({'message': "You cannot unfollow a user you are not following!"}, status=400)
+            except:
+                return JsonResponse({}, status=404)
+
+    return JsonResponse({}, status=400)
