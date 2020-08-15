@@ -48,7 +48,7 @@
             <hr>
             <div id="comments-div">
                 {% for comment in comments %}
-                    <p><b>User:</b><a href="#"> {{ comment.user }}</a> <small class="text-muted">- {{ comment.created_at }}</small></p>
+                    <p><b>User:</b><a href="{% url 'user' comment.user.username %}"> {{ comment.user }}</a> <small class="text-muted">- {{ comment.created_at }}</small></p>
                     <p>{{ comment.comment }}</p>
                 
                     <hr>

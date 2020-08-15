@@ -227,7 +227,10 @@ def follow(request):
 
 @login_required
 def view_liked(request):
-    pass
+    liked_recipes = Like.objects.filter(user = request.user)
+    return render(request, "main/liked_recipes.html", {
+            "recipes": liked_recipes
+        })
 
 
 @login_required

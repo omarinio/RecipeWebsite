@@ -34,10 +34,10 @@
                       <a class="nav-link" href="{% url 'create' %}">Post Recipe</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'recipes' %}">Profile</a>
+                      <a class="nav-link" href="{% url 'user' request.user.username %}">Profile</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'recipes' %}">Likes</a>
+                      <a class="nav-link" href="{% url 'view_liked' %}">Likes</a>
                     </li>
 
                     <li class="nav-item">

@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(result => {
               console.log(result);
               if (result.status == 201) {
-                document.getElementById("comments-div").innerHTML += `<p><b>User:</b><a href="#"> ${ result.user }</a> <small class="text-muted">- ${ result.created_at }</small></p>
+                document.getElementById("comments-div").innerHTML += `<p><b>User:</b><a href="/user/${ result.user }"> ${ result.user }</a> <small class="text-muted">- ${ result.created_at }</small></p>
                 <p>${ comment }</p>
             
                 <hr>`
