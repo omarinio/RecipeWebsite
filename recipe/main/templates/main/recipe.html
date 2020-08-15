@@ -7,7 +7,19 @@
             <h2 class="card-title" id="recipe-title">{{ recipe.title|title }}</h2>
             <p class="card-text">{{ recipe.description }}</p>
         </div>
-        <img id="recipe-img" class="recipe-img" src="{{ recipe.picture.url }}" alt="Card image cap">
+        <div>
+            <img id="recipe-img" class="recipe-img" src="{{ recipe.picture.url }}" alt="Card image cap">
+            <div style="display: inline-block;">
+                {% if request.user in recipe.likes.all %}
+                    <img src="{% static 'main/filled.png' %}" alt="Like button" class="like-button" data-post_id="{{ recipe.id }}" data-action="unlike" id="liked-{{ recipe.id }}" style="display: block">
+                    <img src="{% static 'main/empty.png' %}" alt="Like button" class="like-button" data-post_id="{{ recipe.id }}" data-action="like" id="unliked-{{ recipe.id }}" style="display: none">
+                {% else %}
+                    <img src="{% static 'main/filled.png' %}" alt="Like button" class="like-button" data-post_id="{{ recipe.id }}" data-action="unlike" id="liked-{{ recipe.id }}" style="display: none">
+                    <img src="{% static 'main/empty.png' %}" alt="Like button" class="like-button" data-post_id="{{ recipe.id }}" data-action="like" id="unliked-{{ recipe.id }}" style="display: block"> 
+                {% endif %}
+                <p style="text-align: center;" id="like-count-{{ recipe.id }}">{{ recipe.likes.count }}</p>
+            </div>
+        </div>
 
         <div class="card-body">
             <h4 class="card-title">Ingredients</h4>
@@ -54,4 +66,5 @@
 {% block script %}
   <script src="{% static 'main/image-popup.js' %}"></script>
   <script src="{% static 'main/comments.js' %}"></script>
+  <script src="{% static 'main/like_recipe.js' %}"></script>
 {% endblock %}

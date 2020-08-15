@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.core.paginator import Paginator
 
-from .models import User, Recipe, Comment, Follow
+from .models import User, Recipe, Comment, Follow, Like
 
 
 class CommentForm(forms.Form):
@@ -223,3 +223,48 @@ def follow(request):
                 return JsonResponse({}, status=404)
 
     return JsonResponse({}, status=400)
+
+
+@login_required
+def view_liked(request):
+    pass
+
+
+@login_required
+def like_recipe(request):
+    if request.method != "PUT":
+        return JsonResponse({"status": 400, 'message': "Must access through PUT request"}, status = 400)
+
+    data = json.loads(request.body)
+
+    post_id = data.get("post_id", "")
+    action = data.get("action", "")
+    
+    try:       
+        recipe = Recipe.objects.get(id = post_id)
+    except:
+        return JsonResponse({"status": 404, 'message': "Post not found"}, status = 404)
+
+    if action == "like":
+        try:
+            if request.user in recipe.likes.all():
+                return JsonResponse({"status": 400, 'message': "You already liked this post!"}, status=400)
+            else:
+                recipe.likes.add(request.user)
+                recipe.save()
+                Like.objects.create(user = request.user, recipe = recipe)
+                return JsonResponse({"status": 201}, status = 201)
+        except:
+            return JsonResponse({"status": 400, 'message': "Something has gone wrong..."}, status=400)
+    else:
+        try:
+            if request.user in recipe.likes.all():
+                recipe.likes.remove(request.user)
+                recipe.save()
+                liked = Like.objects.get(user = request.user, recipe = recipe)
+                liked.delete()
+                return JsonResponse({"status": 201}, status = 201)
+            else:
+                return JsonResponse({"status": 400, 'message': "You cannot unlike a post you haven't liked!"}, status=400)
+        except:
+            return JsonResponse({"status": 400, 'message': "Something has gone wrong..."}, status=400)

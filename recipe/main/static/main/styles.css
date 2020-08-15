@@ -54,4 +54,10 @@ input, label {
 
 #follower-view {
     margin-left: 50px;
+    
+}
+
+.like-button {
+    height: 40px;
+    width: 40px;
 }
