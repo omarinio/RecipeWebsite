@@ -300,6 +300,24 @@ def like_recipe(request):
 
     
 def search(request):
-    return render(request, "main/about.html", {
-        "search": SearchForm()
-    }) 
+
+    if request.method == "POST":
+
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data["search_form"]
+
+            substring_recipes = [s for s in Recipe.objects.values_list('title', flat=True) if query in s.lower()]
+            substring_users = [s for s in User.objects.values_list('username', flat=True) if query in s.lower()]
+
+            recipes = Recipe.objects.filter(title__in=substring_recipes)
+            users = User.objects.filter(username__in=substring_users)
+
+            return render(request, "main/search.html", {
+                    "recipes": recipes,
+                    "users": users,
+                    "search": SearchForm()
+                })
+
+
+     
