@@ -61,3 +61,7 @@ input, label {
     height: 40px;
     width: 40px;
 }
+
+.search-buttons {
+    text-align: center;
+}

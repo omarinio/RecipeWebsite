@@ -1,8 +1,14 @@
 {% extends "main/layout.html" %}
+{% load static %}
 
 {% block body %}
     <h1 id="all-recipes">Search Results</h1>
-    <div class="container">
+    <div class="search-buttons">
+        <button class="btn btn-sm btn-dark" id="recipe-btn">Recipes</button>
+        <button class="btn btn-sm btn-dark" id="users-btn">Users</button>
+    </div>
+
+    <div class="container" id="recipe-results">
         <div class="row">
             {% for recipe in recipes%}
                 <div class="col-sm-6 col-lg-4 py-2">
@@ -20,6 +26,17 @@
             {% endfor %}
         </div>
     </div>
+    <div class="container" id="user-results">
+        <div class="row">
+            {% for user in users %}
+                <p><a href="{% url 'user' user %}">{{ user.username }}</a></p>
+            {% endfor %}
+        </div>
+    </div>
     
     
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'main/search.js' %}"></script>
 {% endblock %}
