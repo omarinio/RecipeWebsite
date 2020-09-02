@@ -91,8 +91,17 @@ def register(request):
 
 
 def recipes(request):
+    user_recipes = Recipe.objects.all()
+
+    # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
+
+    paginated_recipes = Paginator(user_recipes, 3)
+
+    page_number = request.GET.get('page')
+    page_recipes = paginated_recipes.get_page(page_number)
+
     return render(request, "main/recipes.html", {
-        'recipes': Recipe.objects.all()
+        'recipes': page_recipes
     })
 
 
@@ -163,10 +172,10 @@ def user(request, username):
 
     # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
 
-    # paginated_posts = Paginator(user_posts, 10)
+    paginated_recipes = Paginator(user_recipes, 10)
 
-    # page_number = request.GET.get('page')
-    # page_posts = paginated_posts.get_page(page_number)
+    page_number = request.GET.get('page')
+    page_recipes = paginated_recipes.get_page(page_number)
 
     if request.user.is_authenticated and request.user != user_profile:
         is_following = False
@@ -180,7 +189,7 @@ def user(request, username):
             "following": following,
             "can_follow": True,
             "is_following": is_following,
-            "recipes": user_recipes
+            "recipes": page_recipes
         })
     else:
         return render(request, "main/profile.html", {
@@ -188,7 +197,7 @@ def user(request, username):
             "followers": followers,
             "following": following,
             "can_follow": False,
-            "recipes": user_recipes
+            "recipes": page_recipes
         })
 
 
