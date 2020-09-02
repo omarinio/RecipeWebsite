@@ -16,5 +16,6 @@ urlpatterns = [
     path("user/<username>", views.user, name="user"),
     path("follow", views.follow),
     path("liked", views.view_liked, name="view_liked"),
-    path("like", views.like_recipe)
+    path("like", views.like_recipe),
+    path("search", views.search, name="search")
 ]

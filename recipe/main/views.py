@@ -23,6 +23,9 @@ class RecipeForm(forms.Form):
     recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Number each step and put it on its own line', 'style': 'width: 500px'}))
     recipe_img = forms.ImageField()
 
+class SearchForm(forms.Form):
+    search_form = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Search', 'class': "form-control mr-sm-2"}))
+
 
 def index(request):
     random_recipe = Recipe.objects.order_by('?').first()
@@ -30,12 +33,15 @@ def index(request):
     print(random_recipe)
 
     return render(request, "main/index.html", {
-        "recipe": random_recipe
+        "recipe": random_recipe,
+        "search": SearchForm()
     }) 
 
 
 def about(request):
-    return render(request, "main/about.html") 
+    return render(request, "main/about.html", {
+        "search": SearchForm()
+    }) 
 
 
 def login_view(request):
@@ -52,7 +58,8 @@ def login_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "main/login.html", {
-                "message": "Invalid username and/or password."
+                "message": "Invalid username and/or password.",
+                "search": SearchForm()
             })
     else:
         return render(request, "main/login.html")
@@ -73,7 +80,8 @@ def register(request):
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "main/register.html", {
-                "message": "Passwords must match."
+                "message": "Passwords must match.",
+                "search": SearchForm()
             })
 
         # Attempt to create new user
@@ -82,12 +90,15 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "main/register.html", {
-                "message": "Username already taken."
+                "message": "Username already taken.",
+                "search": SearchForm()
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "main/register.html")
+        return render(request, "main/register.html", {
+            "search": SearchForm()
+        })
 
 
 def recipes(request):
@@ -95,13 +106,14 @@ def recipes(request):
 
     # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
 
-    paginated_recipes = Paginator(user_recipes, 3)
+    paginated_recipes = Paginator(user_recipes, 12)
 
     page_number = request.GET.get('page')
     page_recipes = paginated_recipes.get_page(page_number)
 
     return render(request, "main/recipes.html", {
-        'recipes': page_recipes
+        'recipes': page_recipes,
+        "search": SearchForm()
     })
 
 
@@ -113,7 +125,8 @@ def recipe_view(request, id):
         'recipe': recipe,
         'comment_form': CommentForm(),
         'comments': Comment.objects.filter(recipe=id),
-        'ingredients': ingredients
+        'ingredients': ingredients,
+        "search": SearchForm()
     })
 
 
@@ -157,7 +170,8 @@ def create(request):
             print(new_recipe.errors)
 
     return render(request, "main/create.html", {
-        'form': RecipeForm()
+        'form': RecipeForm(),
+        "search": SearchForm()
     })
 
 
@@ -172,7 +186,7 @@ def user(request, username):
 
     # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
 
-    paginated_recipes = Paginator(user_recipes, 10)
+    paginated_recipes = Paginator(user_recipes, 12)
 
     page_number = request.GET.get('page')
     page_recipes = paginated_recipes.get_page(page_number)
@@ -189,7 +203,8 @@ def user(request, username):
             "following": following,
             "can_follow": True,
             "is_following": is_following,
-            "recipes": page_recipes
+            "recipes": page_recipes,
+            "search": SearchForm()
         })
     else:
         return render(request, "main/profile.html", {
@@ -197,7 +212,8 @@ def user(request, username):
             "followers": followers,
             "following": following,
             "can_follow": False,
-            "recipes": page_recipes
+            "recipes": page_recipes,
+            "search": SearchForm()
         })
 
 
@@ -238,7 +254,8 @@ def follow(request):
 def view_liked(request):
     liked_recipes = Like.objects.filter(user = request.user)
     return render(request, "main/liked_recipes.html", {
-            "recipes": liked_recipes
+            "recipes": liked_recipes,
+            "search": SearchForm()
         })
 
 
@@ -280,3 +297,9 @@ def like_recipe(request):
                 return JsonResponse({"status": 400, 'message': "You cannot unlike a post you haven't liked!"}, status=400)
         except:
             return JsonResponse({"status": 400, 'message': "Something has gone wrong..."}, status=400)
+
+    
+def search(request):
+    return render(request, "main/about.html", {
+        "search": SearchForm()
+    }) 
