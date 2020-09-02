@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="container" id="user-results">
-        <div class="row">
+        <div>
             {% for user in users %}
                 <p><a href="{% url 'user' user %}">{{ user.username }}</a></p>
             {% endfor %}
