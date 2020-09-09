@@ -33,7 +33,17 @@
             <h4 class="card-title">Directions</h4>
             <p>{{ recipe.body|linebreaks }}</p>
         </div>
+        {% if can_delete %}
+            <div>
+                <form action="{% url 'delete' recipe.id %}" method="post">
+                    {% csrf_token %}
+                    <p><button type="submit" class="btn btn-danger" id="del-btn">Delete</button></p>
+                </form>
+            </div>
+        {% endif %}
     </div>
+
+    
 
     <div class="card">
 

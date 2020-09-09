@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -121,12 +121,18 @@ def recipe_view(request, id):
     recipe = Recipe.objects.get(id=id)
     ingredients = recipe.ingredients.split(",")
 
+    can_delete = False
+    
+    if request.user == recipe.user:
+        can_delete = True
+
     return render(request, "main/recipe.html", {
         'recipe': recipe,
         'comment_form': CommentForm(),
         'comments': Comment.objects.filter(recipe=id),
         'ingredients': ingredients,
-        "search": SearchForm()
+        "search": SearchForm(),
+        "can_delete": can_delete
     })
 
 
@@ -320,4 +326,21 @@ def search(request):
                 })
 
 
+@login_required
+def delete(request, id):
+    if request.method == "POST":
+
+        recipe = Recipe.objects.get(id=id)
+
+        if request.user != recipe.user:
+            return render(request, "main/error.html", {
+                "message": "You do not have permission to delete that."
+            })
+        
+        recipe.delete()
+        return redirect('/')
+
+    return render(request, "main/error.html", {
+                "message": "You do not have permission to delete that."
+            })
      

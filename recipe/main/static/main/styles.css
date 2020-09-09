@@ -65,3 +65,7 @@ input, label {
 .search-buttons {
     text-align: center;
 }
+
+#del-btn {
+    margin-left: 20px;
+}
