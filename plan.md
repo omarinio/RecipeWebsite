@@ -8,7 +8,7 @@
 
 09/09/2020 
 
-* Add deletion functionality for recipes
+* Add deletion functionality for recipes (done)
 * Allow users to edit their already uploaded recipes
 * Potentially add likes for comments (also maybe replies)
 
