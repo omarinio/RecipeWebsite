@@ -35,9 +35,13 @@
         </div>
         {% if can_delete %}
             <div>
+                <form action="{% url 'edit' recipe.id %}" style="float: left">
+                    {% csrf_token %}
+                    <p><button type="submit" class="btn btn-primary del-btn">Edit</button></p>
+                </form>
                 <form action="{% url 'delete' recipe.id %}" method="post">
                     {% csrf_token %}
-                    <p><button type="submit" class="btn btn-danger" id="del-btn" onclick="return confirm('Are you sure you want to delete this recipe?');">Delete</button></p>
+                    <p><button type="submit" class="btn btn-danger del-btn" onclick="return confirm('Are you sure you want to delete this recipe?');">Delete</button></p>
                 </form>
             </div>
         {% endif %}

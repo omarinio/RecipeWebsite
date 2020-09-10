@@ -21,7 +21,7 @@ class RecipeForm(forms.Form):
     recipe_description = forms.CharField(widget=forms.Textarea(attrs={'style': 'width: 500px'}))
     recipe_ingredients = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Seperate ingredients with commas', 'style': 'width: 500px'}))
     recipe_directions = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Number each step and put it on its own line', 'style': 'width: 500px'}))
-    recipe_img = forms.ImageField()
+    recipe_img = forms.ImageField(required=False)
 
 class SearchForm(forms.Form):
     search_form = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Search', 'class': "form-control mr-sm-2"}))
@@ -343,4 +343,71 @@ def delete(request, id):
     return render(request, "main/error.html", {
                 "message": "You do not have permission to delete that."
             })
-     
+    
+
+@login_required
+def edit_recipe(request, id):
+    if request.method == "POST":
+
+        form = RecipeForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            edit_title = form.cleaned_data["recipe_title"]
+            edit_description = form.cleaned_data["recipe_description"]
+            edit_ingredients = form.cleaned_data["recipe_ingredients"]
+            edit_directions = form.cleaned_data["recipe_directions"]
+            # edit_img = form.cleaned_data["recipe_img"]
+
+            recipe_set = Recipe.objects.filter(id=id)
+
+            recipe_set.update(title = edit_title, description = edit_description, ingredients = edit_ingredients,
+                                        body = edit_directions)
+
+            recipe = recipe_set.first()
+
+            recipe.save()
+
+            ingredients = recipe.ingredients.split(",")
+
+            can_delete = False
+            
+            if request.user == recipe.user:
+                can_delete = True
+
+            return render(request, "main/recipe.html", {
+                'recipe': recipe,
+                'comment_form': CommentForm(),
+                'comments': Comment.objects.filter(recipe=id),
+                'ingredients': ingredients,
+                "search": SearchForm(),
+                "can_delete": can_delete
+            })
+        
+        else:
+            print(form.errors)
+            return render(request, "main/error.html", {
+                "message": "Error submitting form, please try again."
+            })
+
+    # when you open up edit page
+    try:
+        recipe = Recipe.objects.get(id=id)
+        if request.user == recipe.user:
+            return render(request, "main/edit.html", {
+                'form': RecipeForm(initial={
+                    "recipe_title": recipe.title,
+                    "recipe_description": recipe.description,
+                    "recipe_ingredients": recipe.ingredients,
+                    "recipe_directions": recipe.body
+                }),
+                "search": SearchForm(),
+                "recipe": recipe
+            })
+        else:
+            return render(request, "main/error.html", {
+                "message": "You do not have permission to access that."
+            })
+    except:
+        return render(request, "main/error.html", {
+            "message": "You do not have permission to access that."
+        })

@@ -13,7 +13,7 @@ class Recipe(models.Model):
     body = models.TextField(blank=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField("User", blank=True)
-    picture = models.ImageField(upload_to='uploads/', verbose_name='image')
+    picture = models.ImageField(upload_to='uploads/', verbose_name='image', blank = True, null = True)
 
 class Follow(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="followed")

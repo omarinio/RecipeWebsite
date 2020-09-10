@@ -66,6 +66,6 @@ input, label {
     text-align: center;
 }
 
-#del-btn {
+.del-btn {
     margin-left: 20px;
 }
