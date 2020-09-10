@@ -12,3 +12,7 @@
 * Allow users to edit their already uploaded recipes
 * Potentially add likes for comments (also maybe replies)
 
+10/09/2020
+
+* Downloaded django-cleanup to delete unused media files
+<https://github.com/un1t/django-cleanup>
