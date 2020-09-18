@@ -16,3 +16,5 @@
 
 * Downloaded django-cleanup to delete unused media files
 <https://github.com/un1t/django-cleanup>
+
+* INSTALL PILLOW python -m pip install Pillow

@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'OpenSans';
+    src: url('/static/fonts/OpenSans-Regular.ttf')
+}
+
+body {
+    font-family: OpenSans;
+}
+
 .card-img-bottom {
     max-height: 400px;
 }
@@ -18,6 +27,7 @@ h1 {
 .about {
     margin: 50px;
     text-align-last: initial;
+    font-size: 18px;
 }
 
 .logos {
