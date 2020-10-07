@@ -28,12 +28,19 @@ class SearchForm(forms.Form):
 
 
 def index(request):
-    random_recipe = Recipe.objects.order_by('?').first()
+    user_recipes = Recipe.objects.all()
 
-    return render(request, "main/index.html", {
-        "recipe": random_recipe,
+    # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
+
+    paginated_recipes = Paginator(user_recipes, 12)
+
+    page_number = request.GET.get('page')
+    page_recipes = paginated_recipes.get_page(page_number)
+
+    return render(request, "main/recipes.html", {
+        'recipes': page_recipes,
         "search": SearchForm()
-    }) 
+    })
 
 
 def about(request):
@@ -97,22 +104,6 @@ def register(request):
         return render(request, "main/register.html", {
             "search": SearchForm()
         })
-
-
-def recipes(request):
-    user_recipes = Recipe.objects.all()
-
-    # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
-
-    paginated_recipes = Paginator(user_recipes, 12)
-
-    page_number = request.GET.get('page')
-    page_recipes = paginated_recipes.get_page(page_number)
-
-    return render(request, "main/recipes.html", {
-        'recipes': page_recipes,
-        "search": SearchForm()
-    })
 
 
 def recipe_view(request, id):
