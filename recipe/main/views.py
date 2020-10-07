@@ -30,8 +30,6 @@ class SearchForm(forms.Form):
 def index(request):
     random_recipe = Recipe.objects.order_by('?').first()
 
-    print(random_recipe)
-
     return render(request, "main/index.html", {
         "recipe": random_recipe,
         "search": SearchForm()
@@ -259,6 +257,7 @@ def follow(request):
 @login_required
 def view_liked(request):
     liked_recipes = Like.objects.filter(user = request.user)
+    print(liked_recipes)
     return render(request, "main/liked_recipes.html", {
             "recipes": liked_recipes,
             "search": SearchForm()
@@ -410,4 +409,21 @@ def edit_recipe(request, id):
     except:
         return render(request, "main/error.html", {
             "message": "You do not have permission to access that."
+        })
+
+@login_required
+def following(request):
+    followed_users = Follow.objects.filter(follower = request.user)
+    recipes = []
+    for user in followed_users:
+        user_recipes = Recipe.objects.filter(user = user.user)
+        for recipe in user_recipes:
+            recipes.append(recipe)
+    
+    recipes.sort(key = lambda x: x.timestamp)
+    recipes = recipes[::-1]
+
+    return render(request, "main/following.html", {
+            "recipes": recipes,
+            "search": SearchForm()
         })
