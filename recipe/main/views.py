@@ -28,11 +28,9 @@ class SearchForm(forms.Form):
 
 
 def index(request):
-    user_recipes = Recipe.objects.all()
+    user_recipes = Recipe.objects.all().order_by('-timestamp')
 
-    # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
-
-    paginated_recipes = Paginator(user_recipes, 12)
+    paginated_recipes = Paginator(user_recipes, 3)
 
     page_number = request.GET.get('page')
     page_recipes = paginated_recipes.get_page(page_number)
@@ -177,11 +175,9 @@ def user(request, username):
     followers = Follow.objects.filter(user = user_profile).count
     following = Follow.objects.filter(follower = user_profile).count
 
-    user_recipes = Recipe.objects.filter(user = user_profile)
+    user_recipes = Recipe.objects.filter(user = user_profile).order_by('-timestamp')
 
-    # user_posts = Post.objects.filter(user = user_profile).order_by('-timestamp')
-
-    paginated_recipes = Paginator(user_recipes, 12)
+    paginated_recipes = Paginator(user_recipes, 3)
 
     page_number = request.GET.get('page')
     page_recipes = paginated_recipes.get_page(page_number)
