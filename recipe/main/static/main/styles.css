@@ -79,3 +79,12 @@ input, label {
 .del-btn {
     margin-left: 20px;
 }
+
+.pag {
+    margin-top: 100px;
+}
+
+.pagination {
+    justify-content: center;
+    display: flex;
+}
