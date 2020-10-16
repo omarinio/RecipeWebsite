@@ -65,7 +65,9 @@ def login_view(request):
                 "search": SearchForm()
             })
     else:
-        return render(request, "main/login.html")
+        return render(request, "main/login.html", {
+            "search": SearchForm()
+        })
 
 
 def logout_view(request):
@@ -177,7 +179,7 @@ def user(request, username):
 
     user_recipes = Recipe.objects.filter(user = user_profile).order_by('-timestamp')
 
-    paginated_recipes = Paginator(user_recipes, 3)
+    paginated_recipes = Paginator(user_recipes, 12)
 
     page_number = request.GET.get('page')
     page_recipes = paginated_recipes.get_page(page_number)
@@ -307,7 +309,8 @@ def search(request):
             return render(request, "main/search.html", {
                     "recipes": recipes,
                     "users": users,
-                    "search": SearchForm()
+                    "search": SearchForm(),
+                    "query": query
                 })
 
 
